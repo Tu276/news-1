@@ -82,7 +82,8 @@ def get_movie(id):
 
     return movie_object #We then create a request and load the data and create a movie object. views.py
 
-# search
+# search paases in api key and the movie na,e  then we creatw a view function
+# for the search route
 
 def search_movie(movie_name):
     search_movie_url = 'https://api.themoviedb.org/3/search/movie?api_key={}&query={}'.format(api_key,movie_name)
