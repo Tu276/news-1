@@ -1,4 +1,4 @@
-<!-- create bootsrp navbar an add to base.html file -->
+
 <div class="navbar navbar-inverse" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -8,12 +8,40 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/"> Watchlist </a>
+            <a class="navbar-brand" href="/"> NEWS-HUB </a>
+            <!-- <li class="nav-item">  -->
+                <a class="btn btn-secondary dropdown-toggle navbar-brand" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    SOURCES
+                </a>              
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink listlist" styles='margin-left:auto; margin-right:auto;'>
+                    {% for source in sources %}
+                    <a class="dropdown-item"      
+                
+                    href="/article/{{source.id}}">
+    
+                    <p>{{source.id}}</p>                    
+                    </a>
+                    {% endfor %}                          
+                </div>
+            <!-- </li> -->
+             
         </div>
         <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li><a href="/">Home</a></li>
-        </div>
+            <ul class="nav navbar-nav navbar-right">              
 
+                <li class="nav-item">
+                    <a class="nav-link" href="/{{'categories/Technology'}}">Technology</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/{{'categories/Entertainment'}}">Entertainment</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/{{'categories/Business'}}">Business</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/{{'categories/Sports'}}">Sports</a>
+                </li>               
+            </ul>               
+        </div>        
     </div>
 </div>

@@ -1,4 +1,4 @@
-<!-- groups blocks of our codes logis to be reused multiple times -->
+<!-- groups blocks of our codes logis to be reused multiple times
 
 {% macro displayMovieList(movie_list) %}
 
@@ -14,14 +14,14 @@
     {% endfor %}
 
 {% endmacro %}
-<!--  update index.html to use macro -->
+ update index.html to use macro
 
-<!-- Displaying reviews macro -->
-{% macro displayReviews(review_list) %}
+Displaying reviews macro
+ {% macro displayReviews(review_list) %}
     {% for review in review_list %}
     <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 review-card">
         <h2> {{ review.title}} </h2>
         <p> {{ review.review | truncate(30) }}</p>
     </div>
     {% endfor %}
-{% endmacro %}
+{% endmacro %} --> -->
