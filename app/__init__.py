@@ -1,4 +1,3 @@
-
 from flask import Flask
 from config import config_options
 from flask_bootstrap import Bootstrap
@@ -24,12 +23,3 @@ def create_app(config_name):
     configure_request(app)
 
     return app
-# We update our app/__init__.py to create our application
-# factory function. We import import the config_options from
-# the the config.py file that we updated. We then create the bootstrap instance.
-# We create a create_app() function that takes the configuration setting key as an argument.
-# This is because we might want to create the application instance under different configurations.
-#  We then create the Flask app instance. We then import the configuration settings directly to the
-# application using the from_object()method. We remove the app.config.from_pyfile("config.py") statement
-# because all our secret configuration settings will be stored as environment variables.
-# We call the init_app() on an extension to complete on their initialization.Finally we return app.
