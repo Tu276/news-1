@@ -1,10 +1,8 @@
 #  cod eto make requests to api
 
-from app import app
-from app import app
-import urllib.request
-import json
+import urllib.request,json
 from .models import Movie
+
 
 # ##############Movie = movie.Movie
 
