@@ -1,110 +1,120 @@
-#  cod eto make requests to api
 
+ 
 import urllib.request,json
-from .models import Movie
+from .models import Article, Source, Category, Headlines
 
-
-# ##############Movie = movie.Movie
-
-# Getting api key
+# getting api key
 api_key = None
-# Getting the movie base url
-base_url = None
 
+# getting news source url
+source_url = None
+catg_url = None
 
 def configure_request(app):
-    global api_key, base_url
-    api_key = app.config['MOVIE_API_KEY']
-    base_url = app.config['MOVIE_API_BASE_URL']
+    global api_key,source_url,catg_url
+    api_key = app.config['NEWS_API_KEY']    
+    source_url = app.config['NEWS_API_SOURCE_URL']
+    catg_url = app.config['CATG_API_URL']
+
+# Method to get json response
+def get_source():
+    get_sources_url = source_url.format(api_key)
+
+    with urllib.request.urlopen(get_sources_url) as url:
+        get_sources_data = url.read()
+        get_sources_response = json.loads(get_sources_data)
 
 
-# Get data from api
+        source_results = None        
 
-def get_movies(category):
-    '''
-    Function that gets the json response to our url request
-    '''
-    get_movies_url = base_url.format(category, api_key)
+        if get_sources_response['sources']:
+            source_results_list = get_sources_response['sources']
+            source_results = process_results(source_results_list)
 
-    with urllib.request.urlopen(get_movies_url) as url:
-        get_movies_data = url.read()
-        get_movies_response = json.loads(get_movies_data)
+            return source_results
 
-        movie_results = None
+# method to define the processes of news source
+def process_results(source_list):
+    source_results = []
 
-        if get_movies_response['results']:
-            movie_results_list = get_movies_response['results']
-            movie_results = process_results(movie_results_list)
+    for source_item in source_list:
+        id = source_item.get('id')
+        name = source_item.get('name')
+        description = source_item.get('description')
+        url = source_item.get('url')
 
-    return movie_results
+        if id:
+            source_object = Source(id,name,description,url)
+            source_results.append(source_object)   
 
-    # process results
+    return source_results
 
+def article_source(id):
+    article_source_url ='https://newsapi.org/v2/top-headlines?sources={}&apiKey={}'.format(id,api_key)
+    print(article_source_url)
 
-def process_results(movie_list):
-    '''
-    Function  that processes the movie result and transform them to a list of Objects
+    with urllib.request.urlopen(article_source_url) as url:
+        article_source_data = url.read()
+        article_source_response = json.loads(article_source_data)
 
-    Args:
-        movie_list: A list of dictionaries that contain movie details
+        article_source_results = None
 
-    Returns :
-        movie_results: A list of movie objects
-    '''
-    movie_results = []
-    for movie_item in movie_list:
-        id = movie_item.get('id')
-        title = movie_item.get('original_title')
-        overview = movie_item.get('overview')
-        poster = movie_item.get('poster_path')
-        vote_average = movie_item.get('vote_average')
-        vote_count = movie_item.get('vote_count')
+        if article_source_response['articles']:
+            article_source_list = article_source_response['articles']
+            article_source_results = process_articles_results(article_source_list)
 
-        if poster:
-            movie_object = Movie(id, title, overview,
-                                 poster, vote_average, vote_count)
-            movie_results.append(movie_object)
+    return article_source_results
 
-    return movie_results  # empty list to store our newly cereated movie objects
+# method to transforn news sources to objects
+def process_articles_results(news):
+    
+    article_source_results = []
 
+    for article in news:
+        
+        author = article.get('author')
+        title = article.get('title')
+        description = article.get('description')
+        url = article.get('url')
+        urlToImage = article.get('urlToImage')
+        publishedAt = article.get('publishedAt')
 
-def get_movie(id):
-    get_movie_details_url = base_url.format(id, api_key)
+        if url:
+            article_objects = Article(author,title, description, url,urlToImage,publishedAt)
+            article_source_results.append(article_objects)
 
-    with urllib.request.urlopen(get_movie_details_url) as url:
-        movie_details_data = url.read()
-        movie_details_response = json.loads(movie_details_data)
+    return article_source_results
 
-        movie_object = None
-        if movie_details_response:
-            id = movie_details_response.get('id')
-            title = movie_details_response.get('original_title')
-            overview = movie_details_response.get('overview')
-            poster = movie_details_response.get('poster_path')
-            vote_average = movie_details_response.get('vote_average')
-            vote_count = movie_details_response.get('vote_count')
+#method to get json url request
+def get_category(catg_name):
+    get_category_url = catg_url.format(catg_name,api_key)
+    print(get_category_url)
 
-            movie_object = Movie(id, title, overview,
-                                 poster, vote_average, vote_count)
+    with urllib.request.urlopen(get_category_url) as url:
+        get_category_data = url.read()
+        get_category_response = json.loads(get_category_data)
 
-    # We then create a request and load the data and create a movie object. views.py
-    return movie_object
+        get_category_results = None
 
-# search paases in api key and the movie na,e  then we creatw a view function
-# for the search route
+        if get_category_response['articles']:
+            get_category_list = get_category_response['articles']
+            get_category_results = process_articles_results(get_category_list)
+          
+    return get_category_results
 
+# method that gets the response to the category json
+def get_headlines():
+    get_headlines_url ='https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey={}'.format(api_key)
+    print(get_headlines_url)
 
-def search_movie(movie_name):
-    search_movie_url = 'https://api.themoviedb.org/3/search/movie?api_key={}&query={}'.format(
-        api_key, movie_name)
-    with urllib.request.urlopen(search_movie_url) as url:
-        search_movie_data = url.read()
-        search_movie_response = json.loads(search_movie_data)
+    with urllib.request.urlopen(get_headlines_url) as url:
+        get_headlines_data = url.read()
+        get_headlines_response = json.loads(get_headlines_data)
 
-        search_movie_results = None
+        get_headlines_results = None
 
-        if search_movie_response['results']:
-            search_movie_list = search_movie_response['results']
-            search_movie_results = process_results(search_movie_list)
-
-    return search_movie_results
+        if get_headlines_response['articles']:
+            get_headlines_list = get_headlines_response['articles']
+            get_headlines_results = process_articles_results(get_headlines_list)
+          
+    return get_headlines_results
