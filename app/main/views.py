@@ -1,5 +1,4 @@
-
-from flask import render_template,url_for,request,redirect
+from flask import render_template,url_for,redirect
 from .import main
 from ..requests import get_source, article_source, get_category,get_headlines
 
