@@ -1,6 +1,6 @@
 from flask import render_template, request, redirect, url_for
 from . import main
-from ..request import get_movies, get_movie, search_movie
+from ..requests import get_movies, get_movie, search_movie
 
 #  function handling review template
 from ..models import review
@@ -9,8 +9,6 @@ Review = review.Review
 
 # Views
 
-
-@main.route('/')
 @main.route('/')
 def index():
     '''
