@@ -1,1 +1,26 @@
-<h1> Hello Movie {{ id }} </h1>
+{% extends 'base.html' %}
+<!-- {% import 'macros.html' as macro %} -->
+
+{% block content %}
+<h1 class="text-capitalize text-center"> {{id}}</h3>
+
+<div class="container-fluid">
+  <div class="row">
+    {% for article in articles %}
+      <div class="col-md-4">
+        <div class="thumbnail">
+          <a>
+            <img src="{{article.urlToImage}}" class="img-responsive" styles="height:20px">
+          </a>
+          <div class="details">
+            <h4>{{article.author}}</h4>
+              <h4>{{article.description}}</h4>
+              <a href="{{article.url}}" target="_blank"> view more details</a>
+              <p>Publish Date:{{article.publishedAt}}</p>
+          </div>                   
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
