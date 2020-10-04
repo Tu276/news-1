@@ -117,18 +117,18 @@ def get_category(catg_name):
     return get_category_results
 
 # method that gets the response to the category json
-# def get_headlines():
-#     get_headlines_url ='https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey={}'.format(api_key)
-#     print(get_headlines_url)
+def get_headlines():
+    get_headlines_url ='https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey={}'.format(api_key)
+    print(get_headlines_url)
 
-#     with urllib.request.urlopen(get_headlines_url) as url:
-#         get_headlines_data = url.read()
-#         get_headlines_response = json.loads(get_headlines_data)
+    with urllib.request.urlopen(get_headlines_url) as url:
+        get_headlines_data = url.read()
+        get_headlines_response = json.loads(get_headlines_data)
 
-#         get_headlines_results = None
+        get_headlines_results = None
 
-#         if get_headlines_response['articles']:
-#             get_headlines_list = get_headlines_response['articles']
-#             get_headlines_results = process_articles_results(get_headlines_list)
+        if get_headlines_response['articles']:
+            get_headlines_list = get_headlines_response['articles']
+            get_headlines_results = process_articles_results(get_headlines_list)
 
-#     return get_headlines_results
+    return get_headlines_results
